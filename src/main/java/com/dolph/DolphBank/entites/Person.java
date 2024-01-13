@@ -1,9 +1,10 @@
-package entites;
+package com.dolph.DolphBank.entites;
 
 import jakarta.persistence.*;
 import lombok.Data;
 
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name="osoba")
@@ -36,4 +37,14 @@ public class Person {
 
     @Column(name = "username", nullable = false, unique = true)
     private String username;
+
+    @Column(name = "adresa", nullable = false)
+    private String address;
+
+    @Column(name = "aktivan")
+    private boolean active;
+
+    @ElementCollection(fetch = FetchType.EAGER)
+    @OrderColumn
+    private List<String> roles;
 }
