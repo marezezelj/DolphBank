@@ -1,8 +1,10 @@
 package com.dolph.DolphBank.controllers;
 
+import com.dolph.DolphBank.dto.PersonCreateDTO;
 import com.dolph.DolphBank.dto.PersonUpdateDTO;
 import com.dolph.DolphBank.entites.Person;
 import com.dolph.DolphBank.services.PersonService;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -40,6 +42,11 @@ public class PersonController {
     public ResponseEntity<Object> deletePerson(@PathVariable("id") Long id) {
         personService.deletePerson(id);
         return new ResponseEntity<>("Person deleted.", HttpStatus.OK);
+    }
+
+    @PostMapping("/register")
+    public ResponseEntity<Object> register(@Valid @RequestBody PersonCreateDTO personCreateDTO) {
+        return ResponseEntity.ok(personService.createPerson(personCreateDTO));
     }
 
 

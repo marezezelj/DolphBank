@@ -1,15 +1,23 @@
 package com.dolph.DolphBank.entites;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Data;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name="osoba")
 @Inheritance(strategy = InheritanceType.JOINED)
 @Data
+@Builder
 public class Person {
 
     @Id
@@ -47,4 +55,15 @@ public class Person {
     @ElementCollection(fetch = FetchType.EAGER)
     @OrderColumn
     private List<String> roles;
+
+    @JsonIgnore
+    private String secretKey;
+
+    @JsonIgnore
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        if(roles == null) {
+            return Collections.singleton(new SimpleGrantedAuthority("UNCONFIRMED"));
+        }
+        return roles.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList());
+    }
 }

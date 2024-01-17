@@ -1,5 +1,7 @@
 package com.dolph.DolphBank.services;
 
+import com.dolph.DolphBank.dto.PersonCreateDTO;
+import com.dolph.DolphBank.dto.PersonDTO;
 import com.dolph.DolphBank.dto.PersonUpdateDTO;
 import com.dolph.DolphBank.entites.Person;
 import org.springframework.http.ResponseEntity;
@@ -14,4 +16,6 @@ public interface PersonService {
     ResponseEntity<Object> updatePerson(Long id, PersonUpdateDTO person);
 
     void deletePerson(Long id);
+
+    PersonDTO createPerson(PersonCreateDTO personCreateDTO);
 }
