@@ -1,4 +1,4 @@
-package entites;
+package com.dolph.DolphBank.entites;
 
 import jakarta.persistence.*;
 
