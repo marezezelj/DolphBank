@@ -7,7 +7,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "klijent")
-@PrimaryKeyJoinColumn(name = "id")
+@PrimaryKeyJoinColumn(name = "id_osoba")
 @Data
 public class Client extends Person {
 
@@ -19,8 +19,8 @@ public class Client extends Person {
     @Column(name = "rejting")
     private Long creditRating;
 
-    @Column(name = "id_osoba")
-    private Long idPerson;
+    /*@Column(name = "id_osoba")
+    private Long idPerson;*/
 
     @OneToMany(mappedBy = "owner")
     private List<Account> accounts;

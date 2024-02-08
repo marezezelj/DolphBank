@@ -1,5 +1,6 @@
 package com.dolph.DolphBank.services;
 
+import com.dolph.DolphBank.dto.PasswordDTO;
 import com.dolph.DolphBank.dto.PersonCreateDTO;
 import com.dolph.DolphBank.dto.PersonDTO;
 import com.dolph.DolphBank.dto.PersonUpdateDTO;
@@ -18,4 +19,8 @@ public interface PersonService {
     void deletePerson(Long id);
 
     PersonDTO createPerson(PersonCreateDTO personCreateDTO);
+
+    void activatePassword(PasswordDTO passwordDTO, Long id);
+
+    Person findPersonByEmail(String email);
 }

@@ -29,7 +29,7 @@ public class GlobalConfiguration {
         mailSender.setPort(587);
 
         mailSender.setUsername("dolphsocial@gmail.com");
-        mailSender.setPassword("delfinisunajbolji");
+        mailSender.setPassword("hmcqcsfrnduchbuo");
 
         Properties props = mailSender.getJavaMailProperties();
         props.put("mail.smtp.ssl.trust", "smtp.gmail.com");

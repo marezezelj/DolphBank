@@ -2,8 +2,10 @@ package com.dolph.DolphBank.entites;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
@@ -18,6 +20,8 @@ import java.util.stream.Collectors;
 @Inheritance(strategy = InheritanceType.JOINED)
 @Data
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Person {
 
     @Id
@@ -31,7 +35,7 @@ public class Person {
     @Column(name="prezime", nullable = false)
     private String surname;
 
-    @Column(name="datumRodjenja", nullable = false)
+    @Column(name="datum_rodjenja", nullable = false)
     private Date birthDate;
 
     @Column(name = "email", unique = true, nullable = false)
@@ -49,7 +53,7 @@ public class Person {
     @Column(name = "adresa", nullable = false)
     private String address;
 
-    @Column(name = "aktivan")
+    @Column(name = "aktivna")
     private boolean active;
 
     @ElementCollection(fetch = FetchType.EAGER)
@@ -57,6 +61,7 @@ public class Person {
     private List<String> roles;
 
     @JsonIgnore
+    @Column(name = "secret_key")
     private String secretKey;
 
     @JsonIgnore
