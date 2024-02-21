@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
@@ -19,9 +20,9 @@ import java.util.stream.Collectors;
 @Table(name="osoba")
 @Inheritance(strategy = InheritanceType.JOINED)
 @Data
-@Builder
-@NoArgsConstructor
+@SuperBuilder
 @AllArgsConstructor
+@NoArgsConstructor
 public class Person {
 
     @Id
@@ -57,8 +58,9 @@ public class Person {
     private boolean active;
 
     @ElementCollection(fetch = FetchType.EAGER)
-    @OrderColumn
-    private List<String> roles;
+    @CollectionTable(name = "person_role", joinColumns = @JoinColumn(name = "person_id"))
+    @Enumerated(EnumType.STRING)
+    private List<PersonRole> roles;
 
     @JsonIgnore
     @Column(name = "secret_key")
@@ -67,8 +69,8 @@ public class Person {
     @JsonIgnore
     public Collection<? extends GrantedAuthority> getAuthorities() {
         if(roles == null) {
-            return Collections.singleton(new SimpleGrantedAuthority("UNCONFIRMED"));
+            return Collections.singleton(new SimpleGrantedAuthority("CLIENT"));
         }
-        return roles.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList());
+        return roles.stream().map(role->new SimpleGrantedAuthority(role.name())).collect(Collectors.toList());
     }
 }

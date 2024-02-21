@@ -37,8 +37,13 @@ public class SpringSecurityConfiguration {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(AbstractHttpConfigurer::disable)
-                .authorizeRequests((authz) -> authz
-                        .anyRequest().permitAll()
+                .authorizeRequests((auth) -> auth.
+                        requestMatchers("/person/login").permitAll()
+                                .requestMatchers("/person/register").permitAll()
+                                .requestMatchers("/person/forgot-password").permitAll()
+                                .requestMatchers("/person/activate-password/**").permitAll()
+                                //.requestMatchers("/admin/**").hasRole("ADMIN")
+                                .anyRequest().authenticated()
                 );
 
         /*

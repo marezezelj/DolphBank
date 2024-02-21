@@ -1,5 +1,6 @@
 package com.dolph.DolphBank.dto;
 
+import com.dolph.DolphBank.entites.PersonRole;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -26,5 +27,5 @@ public class PersonCreateDTO {
 
     private String username;
 
-    private List<String> roles;
+    private List<PersonRole> roles;
 }
