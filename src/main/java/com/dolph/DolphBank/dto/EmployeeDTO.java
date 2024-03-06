@@ -1,17 +1,12 @@
 package com.dolph.DolphBank.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
-import java.util.Date;
+import lombok.*;
 
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class PersonDTO {
+public class EmployeeDTO {
 
     private Long id;
 
@@ -23,7 +18,10 @@ public class PersonDTO {
 
     private String username;
 
-    private boolean active;
-
     private String phone;
+
+    private String role;
+
+    private String department;
+
 }

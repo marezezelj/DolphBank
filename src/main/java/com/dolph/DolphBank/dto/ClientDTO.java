@@ -11,7 +11,7 @@ import java.util.Date;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class PersonDTO {
+public class ClientDTO {
 
     private Long id;
 
@@ -19,11 +19,16 @@ public class PersonDTO {
 
     private String surname;
 
+    private Date dateOfBirth;
+
     private String email;
 
     private String username;
 
-    private boolean active;
-
     private String phone;
+
+    private String address;
+
+    private Long rating;
+
 }

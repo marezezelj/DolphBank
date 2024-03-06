@@ -5,25 +5,15 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
-
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class PersonDTO {
+public class EmployeeCreateDTO {
 
     private Long id;
 
-    private String name;
+    private String jobRole;
 
-    private String surname;
-
-    private String email;
-
-    private String username;
-
-    private boolean active;
-
-    private String phone;
+    private String department;
 }

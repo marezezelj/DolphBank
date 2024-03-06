@@ -1,26 +1,25 @@
 package com.dolph.DolphBank.entites;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 import java.util.List;
 
 @Entity
 @Table(name = "klijent")
-@PrimaryKeyJoinColumn(name = "id_osoba")
+@PrimaryKeyJoinColumn(name = "id")
 @Data
+@SuperBuilder
+@AllArgsConstructor
+@NoArgsConstructor
 public class Client extends Person {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="id")
-    private Long id;
 
     @Column(name = "rejting")
     private Long creditRating;
-
-    /*@Column(name = "id_osoba")
-    private Long idPerson;*/
 
     @OneToMany(mappedBy = "owner")
     private List<Account> accounts;

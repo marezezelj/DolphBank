@@ -1,7 +1,10 @@
 package com.dolph.DolphBank.entites;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.Date;
 import java.util.List;
@@ -9,6 +12,9 @@ import java.util.List;
 @Entity
 @Table(name="racun")
 @Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class Account {
 
     @Id
@@ -31,12 +37,15 @@ public class Account {
     private Date dateOfExpiration;
 
     @Column(name="tip")
+    @Enumerated(EnumType.ORDINAL)
     private AccountType accountType;
 
     @Column(name="status")
+    @Enumerated(EnumType.ORDINAL)
     private StatusType statusType;
 
     @Column(name="vrstaPaketa")
+    @Enumerated(EnumType.ORDINAL)
     private BundleType bundleType;
 
     @Column(name="kamatnaStopa")

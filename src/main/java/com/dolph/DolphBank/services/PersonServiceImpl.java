@@ -1,18 +1,17 @@
 package com.dolph.DolphBank.services;
 
-import com.dolph.DolphBank.dto.PasswordDTO;
-import com.dolph.DolphBank.dto.PersonCreateDTO;
-import com.dolph.DolphBank.dto.PersonDTO;
-import com.dolph.DolphBank.dto.PersonUpdateDTO;
+import com.dolph.DolphBank.dto.*;
+import com.dolph.DolphBank.entites.Client;
 import com.dolph.DolphBank.entites.Person;
+import com.dolph.DolphBank.entites.PersonRole;
 import com.dolph.DolphBank.exceptions.ForbiddenException;
 import com.dolph.DolphBank.exceptions.NotFoundException;
 import com.dolph.DolphBank.exceptions.ValidationException;
+import com.dolph.DolphBank.repositories.ClientRepository;
 import com.dolph.DolphBank.repositories.PersonRepository;
 import jakarta.transaction.Transactional;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -41,19 +40,24 @@ public class PersonServiceImpl implements PersonService, UserDetailsService {
     private final Pattern emailPattern = Pattern.compile("^[a-z0-9_.-]+@(.+)$");
 
     private final Pattern passwordPattern = Pattern.compile("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*\\W)(?!.* ).{8,}$");
+    private ClientRepository clientRepository;
+
+    private EmployeeService employeeService;
 
 
-    public PersonServiceImpl(PersonRepository personRepository, PasswordEncoder passwordEncoder, EmailService emailService, ModelMapper mapper) {
+    public PersonServiceImpl(EmployeeService employeeService, ClientRepository clientRepository, PersonRepository personRepository, PasswordEncoder passwordEncoder, EmailService emailService, ModelMapper mapper) {
         this.personRepository = personRepository;
+        this.clientRepository = clientRepository;
         this.passwordEncoder = passwordEncoder;
         this.emailService = emailService;
+        this.employeeService = employeeService;
         this.mapper = mapper;
     }
 
     @Override
-    public List<Person> getAllPersons() {
+    public List<PersonDTO> getAllPersons() {
         List<Person> persons = personRepository.findAll();
-        return persons;
+        return persons.stream().map(person ->mapper.map(person, PersonDTO.class)).toList();
     }
 
     @Override
@@ -89,7 +93,7 @@ public class PersonServiceImpl implements PersonService, UserDetailsService {
 
         String secretKey = RandomStringUtils.randomNumeric(6);
 
-        Person person = Person.builder()
+        Client client = Client.builder()
                 .name(personCreateDTO.getName())
                 .surname(personCreateDTO.getSurname())
                 .email(personCreateDTO.getEmail())
@@ -97,17 +101,17 @@ public class PersonServiceImpl implements PersonService, UserDetailsService {
                 .birthDate(new Date())
                 .phone(personCreateDTO.getPhone())
                 .address(personCreateDTO.getAddress())
-                .roles(personCreateDTO.getRoles())
+                .roles(List.of(PersonRole.CLIENT))
                 .active(true)
                 .secretKey(secretKey)
                 .build();
 
-        personRepository.saveAndFlush(person);
+        clientRepository.save(client);
 
-        String text = "Secret key: " + secretKey + "\n" + "Link: " + passwordActivateEndpoint + "/" + person.getId();
-        emailService.sendEmail(person.getEmail(), "Activate account", text);
+        String text = "Secret key: " + secretKey + "\n" + "Link: " + passwordActivateEndpoint + "/" + client.getId();
+        emailService.sendEmail(client.getEmail(), "Activate account", text);
 
-        return mapper.map(person, PersonDTO.class);
+        return mapper.map(client, PersonDTO.class);
     }
 
     @Override
@@ -133,6 +137,15 @@ public class PersonServiceImpl implements PersonService, UserDetailsService {
     @Override
     public Person findPersonByEmail(String email) {
         return personRepository.findByEmail(email).orElseThrow(() -> new NotFoundException("Person not found for this email :: " + email));
+    }
+
+    @Override
+    public void hireEmployee(EmployeeCreateDTO employeeCreateDTO) {
+        Person person = personRepository.findById(employeeCreateDTO.getId()).orElseThrow(() -> new NotFoundException("Person not found for this id :: " + employeeCreateDTO.getId()));
+        person.setRoles(List.of(PersonRole.EMPLOYEE));
+
+        employeeService.createEmployee(employeeCreateDTO, person);
+
     }
 
     @Override
