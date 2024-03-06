@@ -1,8 +1,9 @@
 package com.dolph.DolphBank.services;
 
+import com.dolph.DolphBank.dto.ClientDTO;
 import com.dolph.DolphBank.dto.EmployeeCreateDTO;
 import com.dolph.DolphBank.dto.EmployeeDTO;
-import com.dolph.DolphBank.entites.Employee;
+import com.dolph.DolphBank.entites.Account;
 import com.dolph.DolphBank.entites.Person;
 
 import java.util.List;
@@ -18,4 +19,10 @@ public interface EmployeeService {
     List<EmployeeDTO> getAllEmployees();
 
     void fireEmployee(Long id);
+
+    List<ClientDTO> getAllClients();
+
+    void relocateClients(Long id);
+
+    List<Account> getResponsibleAccounts();
 }

@@ -40,9 +40,9 @@ public class SpringSecurityConfiguration {
                 .authorizeRequests((auth) -> auth.
                         requestMatchers("/person/login").permitAll()
                                 .requestMatchers("/person/register").permitAll()
-                                .requestMatchers("/person/forgot-password").permitAll()
-                                .requestMatchers("/person/activate-password/**").permitAll()
-                                //.requestMatchers("/admin/**").hasRole("ADMIN")
+                                .requestMatchers("/person/forgot_password").permitAll()
+                                .requestMatchers("/person/activate_password/**").permitAll()
+                                .requestMatchers("/admin/**").hasRole("ADMIN")
                                 .anyRequest().authenticated()
                 );
 

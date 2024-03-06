@@ -16,9 +16,12 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
     @Query(value = "INSERT INTO zaposleni (id_zaposleni, departman, pozicija) VALUES (?1, ?2, ?3)", nativeQuery = true)
     void insertEmployee(Long id, String department, String jobRole);
 
-    /*@Modifying
+    @Modifying
     @Query(value = "UPDATE zaposleni SET departman = ?2, pozicija = ?3 WHERE id_zaposleni = ?1", nativeQuery = true)
-    void updateEmployee(Long id, String department, String jobRole);*/
+    void updateEmployee(Long id, String department, String jobRole);
 
     List<Employee> findAllByActive(boolean active);
+
+    @Query("SELECT e FROM Employee e LEFT JOIN e.responsibleAccounts a GROUP BY e ORDER BY COUNT(a) ASC")
+    List<Employee> findEmployeeWithLeastResponsibleAccounts();
 }

@@ -1,6 +1,9 @@
 package com.dolph.DolphBank.configuration;
 
+import com.dolph.DolphBank.dto.AccountRequestDTO;
+import com.dolph.DolphBank.entites.Account;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -43,6 +46,10 @@ public class GlobalConfiguration {
 
     @Bean
     public ModelMapper modelMapper() {
-        return new ModelMapper();
-    }
+        ModelMapper modelMapper = new ModelMapper();
+        modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+        modelMapper.typeMap(Account.class, AccountRequestDTO.class).addMappings(mapper -> {
+            mapper.map(Account::getOwner, AccountRequestDTO::setClient);
+        });
+        return modelMapper;    }
 }

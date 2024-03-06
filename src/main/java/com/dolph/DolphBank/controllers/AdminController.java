@@ -2,7 +2,6 @@ package com.dolph.DolphBank.controllers;
 
 import com.dolph.DolphBank.dto.EmployeeCreateDTO;
 import com.dolph.DolphBank.dto.EmployeeDTO;
-import com.dolph.DolphBank.entites.Employee;
 import com.dolph.DolphBank.services.EmployeeService;
 import com.dolph.DolphBank.services.PersonService;
 import lombok.AllArgsConstructor;
@@ -43,8 +42,9 @@ public class AdminController {
     //TODO implementirati transfer klijenata na drugog zaposlenog
     @PutMapping("/fire_employee/{id}")
     public ResponseEntity<Object> fireEmployee(@PathVariable Long id){
+        employeeService.relocateClients(id);
         employeeService.fireEmployee(id);
-        return new ResponseEntity<>("Employee succesfuly fired.", HttpStatus.OK);
+        return new ResponseEntity<>("Employee successfully fired.", HttpStatus.OK);
     }
 
 }
